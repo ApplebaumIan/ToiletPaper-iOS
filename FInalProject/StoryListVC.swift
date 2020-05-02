@@ -13,34 +13,46 @@ class StoryListVC: UIViewController {
 
     let storyTable = UITableView()
     let segmentedControl = UISegmentedControl()
-    let logoutButton = UIButton()
+    let settingsButton = UIButton()
+    let label = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         storyTableSetup()
         readDataFromFirestore()
-        logoutButtonSetup()
+        settingsButtonSetup()
+        labelSetup()
     }
     
-    func logoutButtonSetup(){
-        view.addSubview(logoutButton)
-        logoutButton.translatesAutoresizingMaskIntoConstraints = false
-        logoutButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        logoutButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        logoutButton.setImage(#imageLiteral(resourceName: "logout"), for: .normal)
-        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+
+    
+    func labelSetup(){
+        view.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        label.bottomAnchor.constraint(equalTo: storyTable.topAnchor, constant: -10).isActive = true
+        label.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -5).isActive = true
+        label.text = "toiletpaper."
+        label.font = UIFont.boldSystemFont(ofSize: 35)
     }
     
-    @objc func logoutButtonTapped(){
-        try! Auth.auth().signOut()
-        defaults.set(false, forKey: "tp_signedin")
-        let vc = SignInViewController()
+    func settingsButtonSetup(){
+        view.addSubview(settingsButton)
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        settingsButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        settingsButton.bottomAnchor.constraint(equalTo: storyTable.topAnchor, constant: -12).isActive = true
+        settingsButton.setImage(#imageLiteral(resourceName: "setings"), for: .normal)
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func settingsButtonTapped(){
+        let vc = SettingsViewController()
         vc.modalTransitionStyle = .crossDissolve
         vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
+        present(vc, animated: true, completion: nil)
     }
     
     func segmentedControlSetup(){
@@ -59,7 +71,7 @@ class StoryListVC: UIViewController {
         storyTable.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         storyTable.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         storyTable.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        storyTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
+        storyTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
         storyTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         storyTable.delegate = self
         storyTable.dataSource = self
@@ -80,7 +92,6 @@ class StoryListVC: UIViewController {
             }
         }
     }
-    
 }
 
 extension StoryListVC: UITableViewDataSource, UITableViewDelegate {
@@ -96,6 +107,7 @@ extension StoryListVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.storyTable.deselectRow(at: indexPath, animated: true)
         let vc = StoryVC()
         vc.modalPresentationStyle = .fullScreen
         vc.modalTransitionStyle = .crossDissolve

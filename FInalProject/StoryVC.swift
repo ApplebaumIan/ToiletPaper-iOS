@@ -9,11 +9,11 @@
 import UIKit
 import Firebase
 
-class StoryVC: UIViewController {
+class StoryVC: BaseViewController {
 
     let storyNameLabel = UILabel()
     let storyBodyTextView = UITextView()
-    let backButton = UIButton()
+    let loveButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,29 +21,39 @@ class StoryVC: UIViewController {
         backButtonSetup()
         storyNameSetup()
         storyBodyTextViewSetup()
-        //pushDataToFirestore()
+        loveButtonSetup()
+    }
+
+    func loveButtonSetup(){
+        view.addSubview(loveButton)
+        loveButton.translatesAutoresizingMaskIntoConstraints = false
+        loveButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        loveButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        loveButton.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
+        loveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        loveButton.setImage(#imageLiteral(resourceName: "loveHollow"), for: .normal)
+        loveButton.setImage(#imageLiteral(resourceName: "loveFull"), for: .selected)
+        loveButton.addTarget(self, action: #selector(loveButtonTapped), for: .touchUpInside)
     }
     
-    func pushDataToFirestore(){
-        let citiesRef = db.collection("cities")
-
+    @objc func loveButtonTapped(){
+        if loveButton.isSelected {
+            loveButton.isSelected = false
+        } else {
+            loveButton.isSelected = true
+        }
+    }
+    
+    func updateDataToFirestore(){
         
-        citiesRef.document("BJ").setData([
-            "name": "Beijing",
-            "country": "China",
-            "capital": true,
-            "population": 21500000,
-            "regions": ["jingjinji", "hebei"]
-            ])
     }
     
-
     
     func storyNameSetup(){
         view.addSubview(storyNameLabel)
         storyNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        storyNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        storyNameLabel.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 5).isActive = true
+        storyNameLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 20).isActive = true
+        storyNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         storyNameLabel.font = UIFont.boldSystemFont(ofSize: 30)
     }
     
@@ -60,20 +70,6 @@ class StoryVC: UIViewController {
         //storyBodyTextView.textAlignment = .justified
         storyBodyTextView.sizeToFit()
     }
-    
-    func backButtonSetup(){
-        view.addSubview(backButton)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        backButton.setImage(#imageLiteral(resourceName: "back"), for: .normal)
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-    }
 
-    @objc func backButtonTapped(){
-        dismiss(animated: true, completion: nil)
-    }
 }
 
