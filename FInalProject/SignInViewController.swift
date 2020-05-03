@@ -22,7 +22,7 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        view.backgroundColor = .systemYellow
+        view.backgroundColor = .white
         hideKeyboardWhenTappedAround()
         signUpButtonSetup()
         signInButtonSetup()
@@ -39,7 +39,7 @@ class SignInViewController: UIViewController {
         logoImage.widthAnchor.constraint(equalToConstant: 200).isActive = true
         logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         logoImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
-        logoImage.backgroundColor = .red
+        logoImage.image = #imageLiteral(resourceName: "icon")
     }
     
     func usernameTextFieldSetup(){
@@ -51,6 +51,8 @@ class SignInViewController: UIViewController {
         usernameTextField.bottomAnchor.constraint(equalTo: emailTextField.topAnchor, constant: -10).isActive = true
         usernameTextField.backgroundColor = .white
         usernameTextField.placeholder = "Username"
+        usernameTextField.layer.borderWidth = 1
+        usernameTextField.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         usernameTextField.isHidden = true
         usernameTextField.layer.cornerRadius = 10
         usernameTextField.autocapitalizationType = .none
@@ -65,6 +67,8 @@ class SignInViewController: UIViewController {
         emailTextField.bottomAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: -10).isActive = true
         emailTextField.placeholder = "Email"
         emailTextField.backgroundColor = .white
+        emailTextField.layer.borderWidth = 1
+        emailTextField.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         emailTextField.layer.cornerRadius = 10
         emailTextField.textContentType = .emailAddress
         emailTextField.autocapitalizationType = .none
@@ -78,6 +82,8 @@ class SignInViewController: UIViewController {
         passwordTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         passwordTextField.bottomAnchor.constraint(equalTo: signInButton.topAnchor, constant: -20).isActive = true
         passwordTextField.backgroundColor = .white
+        passwordTextField.layer.borderWidth = 1
+        passwordTextField.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         passwordTextField.placeholder = "Password"
         passwordTextField.layer.cornerRadius = 10
         passwordTextField.textContentType = .password
@@ -91,7 +97,7 @@ class SignInViewController: UIViewController {
         signInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         signInButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         signInButton.bottomAnchor.constraint(equalTo: signUpButton.topAnchor, constant: -80).isActive = true
-        signInButton.backgroundColor = .systemRed
+        signInButton.backgroundColor = .black
         signInButton.setTitleColor(.white, for: .normal)
         signInButton.setTitle("Sign in", for: .normal)
         signInButton.layer.cornerRadius = 10
