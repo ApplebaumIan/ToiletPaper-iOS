@@ -24,12 +24,42 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate {
         paperViewSetup()
         storyBodyTextViewSetup()
         loveButtonSetup()
-        
+        getNewsData()
 //        let gesture = UIPanGestureRecognizer(target: self, action: Selector("wasDragged:"))
 //        paperView.addGestureRecognizer(gesture)
 //        paperView.isUserInteractionEnabled = true
 //        gesture.delegate = self
+    }
+    
+    
+    func getNewsData(){
+        let url = URL(string: "https://newsapi.org/v2/top-headlines?" +
+        "country=us&" +
+        "apiKey=2f319c181f714e5dae27dca004f64765")!
+        let session = URLSession.shared
+        session.dataTask(with: url)
         
+        let task = session.dataTask(with: url, completionHandler: { data , response, error in
+        // Check the response
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                //print(json)
+                
+                for dictionary in json as! [String: Any] {
+                    print(dictionary)
+                }
+                
+            } catch let jsonError {
+                print(jsonError)
+            }
+            
+        })
+        task.resume()
     }
     
     func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
