@@ -88,6 +88,7 @@ class SignInViewController: UIViewController {
         passwordTextField.layer.cornerRadius = 10
         passwordTextField.textContentType = .password
         passwordTextField.autocapitalizationType = .none
+        passwordTextField.textContentType = .password
     }
  
     func signInButtonSetup(){

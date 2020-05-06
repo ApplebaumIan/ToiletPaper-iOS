@@ -15,6 +15,7 @@ class StoryListVC: UIViewController {
     let segmentedControl = UISegmentedControl()
     let settingsButton = UIButton()
     let label = UILabel()
+    var newsData: News?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +24,36 @@ class StoryListVC: UIViewController {
         readDataFromFirestore()
         settingsButtonSetup()
         labelSetup()
+        fetchJSONNews()
+        print("<<<<< \(newsData)")
     }
     
-
+    func fetchJSONNews() {
+        
+        DispatchQueue.main.async {
+            let url = URL(string: "https://newsapi.org/v2/top-headlines?" +
+            "country=us&" +
+            "apiKey=2f319c181f714e5dae27dca004f64765")!
+            let session = URLSession.shared
+            session.dataTask(with: url)
+            let task = session.dataTask(with: url, completionHandler: { data , response, error in
+            // Check the response
+                if error != nil {
+                    print(error)
+                    return
+                }
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                    self.newsData = try! JSONDecoder().decode(News.self, from: data!)
+                    print(">>>>>>>>> \(self.newsData?.status) \(self.newsData?.totalResults)")
+                } catch let jsonError {
+                    print(jsonError.localizedDescription)
+                }
+            })
+            task.resume()
+        }
+  
+    }
     
     func labelSetup(){
         view.addSubview(label)
@@ -107,6 +135,7 @@ extension StoryListVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(newsData?.totalResults)
         self.storyTable.deselectRow(at: indexPath, animated: true)
         let vc = StoryVC()
         vc.modalPresentationStyle = .fullScreen
