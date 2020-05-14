@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
         FirebaseApp.configure()
         if defaults.bool(forKey: "tp_signedin") == true {
-            let contentView = NewsViewController()
+            let contentView = StoryListVC()
             if let windowScene = scene as? UIWindowScene {
                 let window = UIWindow(windowScene: windowScene)
                 window.rootViewController = contentView

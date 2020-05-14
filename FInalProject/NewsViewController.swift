@@ -26,6 +26,7 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     @objc func timedFunction(){
         print(newsData?.totalResults)
+        collectionview.reloadData()
     }
     
     @objc func eventWith(timer: Timer!) {
@@ -79,15 +80,21 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        if newsData == nil {
+            return 10
+        } else {
+            return (newsData?.articles.count)!
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! PaperViewCell
+        cell.headlineTextView.text = newsData?.articles[indexPath.row].title ?? ""
+        cell.newsBody.text = newsData?.articles[indexPath.row].description ?? ""
+        cell.newsBody.sizeToFit()
         return cell
     }
+    
 
 
 }
-
-
