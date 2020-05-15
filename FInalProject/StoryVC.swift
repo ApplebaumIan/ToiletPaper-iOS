@@ -9,21 +9,24 @@
 import UIKit
 import Firebase
 
-class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelegate {
+class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelegate, UIScrollViewDelegate {
 
     let storyNameLabel = UILabel()
     let storyBodyTextView = UITextView()
     let loveButton = UIButton()
     let paperView = UIView()
+    let scrollView = UIScrollView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         backButtonSetup()
         storyNameSetup()
-        paperViewSetup()
+        scrollViewSetup()
+        //paperViewSetup()
         storyBodyTextViewSetup()
         loveButtonSetup()
+        
     }
     
     func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
@@ -39,6 +42,45 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
             gestureRecognizer.setTranslation(CGPoint(x: 0,y: 0), in: self.view)
         }
 
+    }
+    
+    func scrollViewSetup() {
+        let actualScrollView = UIScrollView()
+        view.addSubview(actualScrollView)
+        actualScrollView.translatesAutoresizingMaskIntoConstraints = false
+        actualScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        actualScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        actualScrollView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 10).isActive = true
+        actualScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        actualScrollView.delegate = self
+        actualScrollView.backgroundColor = .blue
+        actualScrollView.isScrollEnabled = true
+        
+        //scrollView.frame = CGRect(x: 0, y: 0, width: 100, height: 2000)
+//        actualScrollView.addSubview(scrollView)
+//        scrollView.translatesAutoresizingMaskIntoConstraints = false
+//        scrollView.leadingAnchor.constraint(equalTo: actualScrollView.leadingAnchor).isActive = true
+//        scrollView.topAnchor.constraint(equalTo: actualScrollView.topAnchor).isActive = true
+//        scrollView.bottomAnchor.constraint(equalTo: actualScrollView.bottomAnchor).isActive = true
+//        scrollView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
+//        scrollView.isUserInteractionEnabled = true
+//        scrollView.backgroundColor = .black
+        
+        
+        view.addSubview(paperView)
+        paperView.translatesAutoresizingMaskIntoConstraints = false
+        [
+        paperView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 40),
+        paperView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
+        paperView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        paperView.heightAnchor.constraint(equalToConstant: 1000),
+            ].forEach{ $0.isActive = true }
+        paperView.backgroundColor = .white
+
+        paperView.layer.shadowColor = UIColor.black.cgColor
+        paperView.layer.shadowOpacity = 0.5
+        paperView.layer.shadowOffset = .zero
+        paperView.layer.shadowRadius = 10
     }
     
     func paperViewSetup(){
@@ -122,6 +164,8 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
         storyBodyTextView.backgroundColor = .red
 //        storyBodyTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
+    
+    
     
     
 
