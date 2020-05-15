@@ -44,20 +44,30 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
     func paperViewSetup(){
         view.addSubview(paperView)
         paperView.translatesAutoresizingMaskIntoConstraints = false
-        paperView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        paperView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        paperView.heightAnchor.constraint(equalToConstant: view.frame.size.width*1.25).isActive = true
-        paperView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 40).isActive = true
+        
+        [
+        paperView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 40),
+        paperView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
+        paperView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        paperView.heightAnchor.constraint(equalToConstant: view.frame.size.width*1.25),
+            ].forEach{ $0.isActive = true }
         paperView.backgroundColor = .white
 
         paperView.layer.shadowColor = UIColor.black.cgColor
         paperView.layer.shadowOpacity = 0.5
         paperView.layer.shadowOffset = .zero
         paperView.layer.shadowRadius = 10
-//        paperView.layer.shadowPath = UIBezierPath(rect: paperView.bounds).cgPath
-//        paperView.layer.shouldRasterize = true
-//        paperView.layer.rasterizationScale = UIScreen.main.scale
-        //paperView.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        print("Text view changed")
+        let size = CGSize(width: view.frame.width - 40, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        paperView.constraints.forEach { (constraint) in
+            if constraint.firstAttribute == .height {
+                constraint.constant = estimatedSize.height+view.frame.size.width*1.25
+            }
+        }
     }
 
     func loveButtonSetup(){
@@ -78,6 +88,7 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
         } else {
             loveButton.isSelected = true
         }
+        view.endEditing(true)
     }
     
     func updateDataToFirestore(){
@@ -97,10 +108,10 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
         paperView.addSubview(storyBodyTextView)
         storyBodyTextView.translatesAutoresizingMaskIntoConstraints = false
         [
-        storyBodyTextView.topAnchor.constraint(equalTo: paperView.topAnchor, constant: 10),
+        storyBodyTextView.topAnchor.constraint(equalTo: paperView.topAnchor, constant: 20),
         storyBodyTextView.leadingAnchor.constraint(equalTo: paperView.leadingAnchor,constant: 20),
-        storyBodyTextView.trailingAnchor.constraint(equalTo: paperView.trailingAnchor, constant: -10),
-        storyBodyTextView.heightAnchor.constraint(equalToConstant: 30),
+        storyBodyTextView.trailingAnchor.constraint(equalTo: paperView.trailingAnchor, constant: -20),
+        storyBodyTextView.bottomAnchor.constraint(equalTo: paperView.bottomAnchor, constant: -20),
             ].forEach{ $0.isActive = true }
         storyBodyTextView.font = UIFont.systemFont(ofSize: 20)
         //storyBodyTextView.isSelectable = false
@@ -112,16 +123,7 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
 //        storyBodyTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
-    func textViewDidChange(_ textView: UITextView) {
-        print("Text view changed")
-        let size = CGSize(width: paperView.frame.width - 40, height: .infinity)
-        let estimatedSize = textView.sizeThatFits(size)
-        textView.constraints.forEach { (constraint) in
-            if constraint.firstAttribute == .height {
-                constraint.constant = 100
-            }
-        }
-    }
+    
 
 }
 
