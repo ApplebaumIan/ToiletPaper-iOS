@@ -25,8 +25,8 @@ class BaseViewController: UIViewController {
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
-        backButton.setImage(#imageLiteral(resourceName: "back"), for: .normal)
+        backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        backButton.setImage(#imageLiteral(resourceName: "arrows"), for: .normal)
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
 

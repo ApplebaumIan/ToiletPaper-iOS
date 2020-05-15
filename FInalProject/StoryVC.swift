@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class StoryVC: BaseViewController, UIGestureRecognizerDelegate {
+class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelegate {
 
     let storyNameLabel = UILabel()
     let storyBodyTextView = UITextView()
@@ -25,14 +25,6 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate {
         storyBodyTextViewSetup()
         loveButtonSetup()
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     func wasDragged(gestureRecognizer: UIPanGestureRecognizer) {
         if gestureRecognizer.state == UIGestureRecognizer.State.began || gestureRecognizer.state == UIGestureRecognizer.State.changed {
@@ -52,10 +44,10 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate {
     func paperViewSetup(){
         view.addSubview(paperView)
         paperView.translatesAutoresizingMaskIntoConstraints = false
-        paperView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
-        paperView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5).isActive = true
+        paperView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        paperView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         paperView.heightAnchor.constraint(equalToConstant: view.frame.size.width*1.25).isActive = true
-        paperView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 5).isActive = true
+        paperView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 40).isActive = true
         paperView.backgroundColor = .white
 
         paperView.layer.shadowColor = UIColor.black.cgColor
@@ -71,8 +63,8 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate {
     func loveButtonSetup(){
         view.addSubview(loveButton)
         loveButton.translatesAutoresizingMaskIntoConstraints = false
-        loveButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        loveButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        loveButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        loveButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         loveButton.centerYAnchor.constraint(equalTo: backButton.centerYAnchor).isActive = true
         loveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         loveButton.setImage(#imageLiteral(resourceName: "loveHollow"), for: .normal)
@@ -104,14 +96,31 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate {
     func storyBodyTextViewSetup(){
         paperView.addSubview(storyBodyTextView)
         storyBodyTextView.translatesAutoresizingMaskIntoConstraints = false
-        storyBodyTextView.leadingAnchor.constraint(equalTo: paperView.leadingAnchor, constant: 10).isActive = true
-        storyBodyTextView.bottomAnchor.constraint(equalTo: paperView.bottomAnchor, constant: -10).isActive = true
-        storyBodyTextView.topAnchor.constraint(equalTo: paperView.topAnchor, constant: 10).isActive = true
-        storyBodyTextView.trailingAnchor.constraint(equalTo: paperView.trailingAnchor,constant: -10).isActive = true
+        [
+        storyBodyTextView.topAnchor.constraint(equalTo: paperView.topAnchor, constant: 10),
+        storyBodyTextView.leadingAnchor.constraint(equalTo: paperView.leadingAnchor,constant: 20),
+        storyBodyTextView.trailingAnchor.constraint(equalTo: paperView.trailingAnchor, constant: -10),
+        storyBodyTextView.heightAnchor.constraint(equalToConstant: 30),
+            ].forEach{ $0.isActive = true }
         storyBodyTextView.font = UIFont.systemFont(ofSize: 20)
-        storyBodyTextView.isSelectable = false
-        storyBodyTextView.isEditable = false
-        storyBodyTextView.sizeToFit()
+        //storyBodyTextView.isSelectable = false
+        //storyBodyTextView.isEditable = false
+        storyBodyTextView.isScrollEnabled = false
+        storyBodyTextView.text = ""
+        storyBodyTextView.delegate = self
+        storyBodyTextView.backgroundColor = .red
+//        storyBodyTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        print("Text view changed")
+        let size = CGSize(width: paperView.frame.width - 40, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        textView.constraints.forEach { (constraint) in
+            if constraint.firstAttribute == .height {
+                constraint.constant = 100
+            }
+        }
     }
 
 }
