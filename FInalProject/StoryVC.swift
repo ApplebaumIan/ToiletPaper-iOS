@@ -15,7 +15,6 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
     let storyBodyTextView = UITextView()
     let loveButton = UIButton()
     let paperView = UIView()
-    let scrollView = UIScrollView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,27 +52,16 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
         actualScrollView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 10).isActive = true
         actualScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         actualScrollView.delegate = self
-        actualScrollView.backgroundColor = .blue
+        actualScrollView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         actualScrollView.isScrollEnabled = true
         
-        //scrollView.frame = CGRect(x: 0, y: 0, width: 100, height: 2000)
-//        actualScrollView.addSubview(scrollView)
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        scrollView.leadingAnchor.constraint(equalTo: actualScrollView.leadingAnchor).isActive = true
-//        scrollView.topAnchor.constraint(equalTo: actualScrollView.topAnchor).isActive = true
-//        scrollView.bottomAnchor.constraint(equalTo: actualScrollView.bottomAnchor).isActive = true
-//        scrollView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-//        scrollView.isUserInteractionEnabled = true
-//        scrollView.backgroundColor = .black
-        
-        
-        view.addSubview(paperView)
+        actualScrollView.addSubview(paperView)
         paperView.translatesAutoresizingMaskIntoConstraints = false
         [
-        paperView.topAnchor.constraint(equalTo: storyNameLabel.bottomAnchor, constant: 40),
-        paperView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
-        paperView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-        paperView.heightAnchor.constraint(equalToConstant: 1000),
+        paperView.topAnchor.constraint(equalTo: actualScrollView.topAnchor, constant: 20),
+        paperView.leadingAnchor.constraint(equalTo: actualScrollView.leadingAnchor,constant: 20),
+        paperView.widthAnchor.constraint(equalToConstant: view.frame.width-40),
+        paperView.bottomAnchor.constraint(equalTo: actualScrollView.bottomAnchor, constant: -20),
             ].forEach{ $0.isActive = true }
         paperView.backgroundColor = .white
 
@@ -150,18 +138,17 @@ class StoryVC: BaseViewController, UIGestureRecognizerDelegate, UITextViewDelega
         paperView.addSubview(storyBodyTextView)
         storyBodyTextView.translatesAutoresizingMaskIntoConstraints = false
         [
-        storyBodyTextView.topAnchor.constraint(equalTo: paperView.topAnchor, constant: 20),
+        storyBodyTextView.topAnchor.constraint(equalTo: paperView.topAnchor, constant: 40),
         storyBodyTextView.leadingAnchor.constraint(equalTo: paperView.leadingAnchor,constant: 20),
         storyBodyTextView.trailingAnchor.constraint(equalTo: paperView.trailingAnchor, constant: -20),
-        storyBodyTextView.bottomAnchor.constraint(equalTo: paperView.bottomAnchor, constant: -20),
+        storyBodyTextView.bottomAnchor.constraint(equalTo: paperView.bottomAnchor, constant: -40),
             ].forEach{ $0.isActive = true }
         storyBodyTextView.font = UIFont.systemFont(ofSize: 20)
         //storyBodyTextView.isSelectable = false
         //storyBodyTextView.isEditable = false
         storyBodyTextView.isScrollEnabled = false
-        storyBodyTextView.text = ""
+        //storyBodyTextView.text = ""
         storyBodyTextView.delegate = self
-        storyBodyTextView.backgroundColor = .red
 //        storyBodyTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
